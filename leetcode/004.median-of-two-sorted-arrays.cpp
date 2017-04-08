@@ -37,13 +37,11 @@ public:
         int n1 = nums1.size(), n2 = nums2.size();
         if (n1 > n2) return findMedianSortedArrays(nums2, nums1);
 
-        int i = 0, j = n1-1;
-        int k = (n1+n2-1)/2;
+        int i = 0, j = n1-1, k = (n1+n2-1)/2;
 
         while (i <= j) {
             int m = i+(j-i)/2;
-            if (nums1[m] > nums2[k-m]) j = m-1;
-            else i = m+1;
+            if (nums1[m] > nums2[k-m]) j = m-1; else i = m+1;
         }
 
         int NA_MIN = numeric_limits<int>::min(), NA_MAX = numeric_limits<int>::max();
