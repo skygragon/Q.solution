@@ -25,43 +25,39 @@
  */
 class Solution {
 public:
-    bool isValidSudoku(vector<vector<char>>& board) {
-        if (board.size() != 9) return false;
-        for (auto& row : board) if (row.size() != 9) return false;
+    const static int N = 9;
+    vector<bool> used;
 
-        int all = 0, b = 0;
+    bool check(char c) {
+        if (c == '.') return true;
+        if (used[c-'0']) return false;
+        return used[c-'0'] = true;
+    }
+
+    bool isValidSudoku(vector<vector<char>>& board) {
+        if (board.size() != N) return false;
+        for (auto& row : board) if (row.size() != N) return false;
+
         // check row
-        for (int i = 0; i < 9; ++i) {
-            all = 0;
-            for (int j = 0; j < 9; ++j) {
-                if (board[i][j] == '.') continue;
-                b = 1 << (board[i][j] - '0');
-                if (b & all) return false;
-                all |= b;
-            }
+        for (int i = 0; i < N; ++i) {
+            used.assign(N, false);
+            for (int j = 0; j < N; ++j)
+                if (!check(board[i][j])) return false;
         }
 
         // check column
-        for (int j = 0; j < 9; ++j) {
-            all = 0;
-            for (int i = 0; i < 9; ++i) {
-                if (board[i][j] == '.') continue;
-                b = 1 << (board[i][j] - '0');
-                if (b & all) return false;
-                all |= b;
-            }
+        for (int j = 0; j < N; ++j) {
+            used.assign(N, false);
+            for (int i = 0; i < N; ++i)
+                if (!check(board[i][j])) return false;
         }
 
         // check 9-cells
-        for (int k = 0; k < 9; ++k) {
-            all = 0;
+        for (int k = 0; k < N; ++k) {
+            used.assign(N, false);
             for (int i = k/3*3; i < k/3*3 + 3; ++i)
-                for (int j = k%3*3; j < k%3*3 + 3; ++j) {
-                    if (board[i][j] == '.') continue;
-                    b = 1 << (board[i][j] - '0');
-                    if (b & all) return false;
-                    all |= b;
-                }
+                for (int j = k%3*3; j < k%3*3 + 3; ++j)
+                    if (!check(board[i][j])) return false;
         }
 
         return true;
