@@ -35,17 +35,10 @@ public:
     ListNode* swapPairs(ListNode* head) {
         if (!head || !head->next) return head;
 
-        ListNode node(0);
-        ListNode *p = head, *cur = &node;
-
-        while (p && p->next) {
-            ListNode * p1 = p->next;
-            p->next = p1->next;
-            p1->next = p;
-
-            cur->next = p1;
-            cur = p;
-            p = p->next;
+        ListNode node(0), *cur = &node;
+        while (head && head->next) {
+            ListNode *p1 = head->next; head->next = p1->next; p1->next = head;
+            cur->next = p1; cur = head; head = head->next;
         }
 
         return node.next;
