@@ -30,8 +30,8 @@ public:
 
     bool check(char c) {
         if (c == '.') return true;
-        if (used[c-'0']) return false;
-        return used[c-'0'] = true;
+        if (used[c-'1']) return false;
+        return used[c-'1'] = true;
     }
 
     bool isValidSudoku(vector<vector<char>>& board) {
