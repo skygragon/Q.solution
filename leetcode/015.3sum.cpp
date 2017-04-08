@@ -30,19 +30,15 @@ public:
         vector<vector<int>> vv;
 
         sort(nums.begin(), nums.end());
-        int n = nums.size();
-
-        for (int i = 0; i < n - 2; ++i) {
-            // skip duplicate numbers
+        for (int i = 0, n = nums.size(); i < n-2; ++i) {
             if (i > 0 && nums[i] == nums[i-1]) continue;
 
-            int x = -nums[i], j = i+1, k = n-1;
+            int target = -nums[i], j = i+1, k = n-1;
             while (j < k) {
-                int s = nums[j] + nums[k];
-                if (s == x) vv.push_back({nums[i], nums[j], nums[k]});
+                int sum = nums[j] + nums[k];
+                if (sum == target) vv.push_back({nums[i], nums[j], nums[k]});
 
-                // skip duplicate numbers
-                if (s > x) {
+                if (sum > target) {
                     while (j < k && nums[k] == nums[k-1]) --k;
                     --k;
                 } else {
