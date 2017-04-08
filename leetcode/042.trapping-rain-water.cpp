@@ -28,14 +28,12 @@
 class Solution {
 public:
     int trap(vector<int>& height) {
-        int n = height.size(), i = 0 , j = n-1;
-
-        int x = 0, max_h = 0;
+        int sum = 0, max_h = 0, i = 0, j = height.size()-1;
         while (i < j) {
             int h = height[i] >= height[j] ? height[j--] : height[i++];
-            if (h >= max_h) max_h = h;
-            else x += max_h-h;
+            max_h = max(max_h, h);
+            sum += max_h-h;
         }
-        return x;
+        return sum;
     }
 };
