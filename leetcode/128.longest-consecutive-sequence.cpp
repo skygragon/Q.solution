@@ -25,23 +25,22 @@
 class Solution {
 public:
     int longestConsecutive(vector<int>& nums) {
-        int x = 0;
+        int len = 0;
         unordered_map<int, pair<int, int>> m;
 
         for (auto num : nums) {
             if (m.find(num) != m.end()) continue;
-            int b = num, e = num;
 
             auto it = m.find(num-1);
-            if (it != m.end()) b = min(b, it->second.first);
+            int b = (it == m.end()) ? num : it->second.first;
 
-            auto it2 = m.find(num+1);
-            if (it2 != m.end()) e = max(e, it2->second.second);
+            it = m.find(num+1);
+            int e = (it == m.end()) ? num : it->second.second;
 
             m[b] = m[e] = m[num] = {b, e};
-            x = max(x, e-b+1);
+            len = max(len, e-b+1);
         }
 
-        return x;
+        return len;
     }
 };
