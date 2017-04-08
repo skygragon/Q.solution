@@ -38,16 +38,11 @@ public:
         vector<int> v = {0};
         if (n == 0) return v;
 
-        for (int i = 1; i <= n; ++i) {
+        for (int i = 0; i < n; ++i) {
             int k = v.size();
-            vector<int> v1(k*2);
-            for (int j = 0; j < k; ++j) {
-                v1[j] = v[j];
-                v1[2*k-j-1] = (1 << (i-1)) + v[j];
-            }
-            v1.swap(v);
+            v.resize(k*2);
+            for (int j = 0; j < k; ++j) v[k+j] = (1 << i) + v[k-1-j];
         }
-
         return v;
     }
 };
