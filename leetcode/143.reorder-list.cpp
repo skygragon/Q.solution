@@ -33,28 +33,26 @@ public:
     void reorderList(ListNode* head) {
         if (!head || !head->next) return;
 
-        ListNode node(0);
+        // split into halves
         ListNode *p = NULL, *p1 = head, *p2 = head;
         while (p2) {
-            p = p1;
-            p1 = p1->next;
+            p = p1; p1 = p1->next;
             p2 = p2->next; if (!p2) break; p2 = p2->next;
         }
-
         p->next = NULL;
+
+        // reverse 2nd half
+        ListNode node(0);
         while (p1) {
-            p2 = p1->next;
-            p1->next = node.next;
-            node.next = p1;
-            p1 = p2;
+            p = p1->next; p1->next = node.next; node.next = p1;
+            p1 = p;
         }
 
+        // merge 2 lists
         p1 = head; p2 = node.next;
         while (p1 && p2) {
             p = p2->next;
-            p2->next = p1->next;
-            p1->next = p2;
-            p1 = p1->next->next;
+            p2->next = p1->next; p1->next = p2; p1 = p1->next->next;
             p2 = p;
         }
     }
