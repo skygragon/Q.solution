@@ -35,10 +35,10 @@
 class Solution {
 public:
     int removeElement(vector<int>& nums, int val) {
-        int k = 0;
-        for (int i = 0; i < nums.size(); ++i) {
-            if (nums[i] != val) nums[k++] = nums[i];
+        int i = 0;
+        for (int j = 0; j < nums.size(); ++j) {
+            if (nums[j] != val) nums[i++] = nums[j];
         }
-        return k;
+        return i;
     }
 };
