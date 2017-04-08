@@ -22,20 +22,18 @@ class Solution {
 public:
     int threeSumClosest(vector<int>& nums, int target) {
         sort(nums.begin(), nums.end());
-        int n = nums.size(), x = -1;
-        for (int k = 0; k < n; ++k) {
+        int NA = numeric_limits<int>::min(), res = NA;
+        for (int k = 0, n = nums.size(); k < n; ++k) {
             int i = k+1, j = n-1;
 
             while (i < j) {
                 int sum = nums[i]+nums[j]+nums[k];
 
                 if (sum == target) return target;
-                if (sum < target) ++i;
-                else --j;
-                if (x == -1 || abs(x-target) > abs(sum-target)) x = sum;
+                if (sum < target) ++i; else --j;
+                if (res == NA || abs(res-target) > abs(sum-target)) res = sum;
             }
         }
-
-        return x;
+        return res;
     }
 };
