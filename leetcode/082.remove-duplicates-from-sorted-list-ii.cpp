@@ -29,15 +29,12 @@
 class Solution {
 public:
     ListNode* deleteDuplicates(ListNode* head) {
-        ListNode node(0), *p = &node, *last = NULL;
+        ListNode node(0), *p = &node;
         while (head) {
-            last = (head->next && head->next->val == head->val) ? head : NULL;
-            if (last) {
-                while (head && head->val == last->val) head = head->next;
-                continue;
-            }
-
-            p->next = head; p = p->next; head = head->next;
+            ListNode *cur = head;
+            while (cur && cur->val == head->val) cur = cur->next;
+            if (cur == head->next) { p->next = head; p = p->next; }
+            head = cur;
         }
         p->next = NULL;
         return node.next;
