@@ -29,25 +29,18 @@
 class Solution {
 public:
     string getPermutation(int n, int k) {
-        string s;
-
         --k;    // ease calculating
 
-        int sub = 1;
-        for (int i = 1; i <= n; ++i) sub *= i;
+        int p = 1; for (int i = 1; i <= n; ++i) p *= i;
 
-        vector<int> v(n, 1);
+        string s;
+        vector<bool> used(n+1, false);
         do {
-            sub = sub / n;
-            int nth = k / sub;
-            k = k % sub;
+            p = p / n; int nth = k / p; k = k % p;
 
-            for (int i = 0; i < v.size(); ++i) {
-                if (v[i] && nth-- == 0) {
-                    v[i] = 0;
-                    s += to_string(i+1);
-                    break;
-                }
+            for (int i = 1; i < used.size(); ++i) {
+                if (used[i]) continue;
+                if (nth-- == 0) { used[i] = true; s += to_string(i); break; }
             }
         } while (--n);
 
