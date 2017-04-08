@@ -46,7 +46,7 @@ public:
         while (n-- > 0) p1 = p1->next;
         while (p1) { p1 = p1->next; p = p->next; }
 
-        p1 = p->next; p->next = p1->next; free(p1);
+        p1 = p->next; p->next = p1->next; delete p1;
         return node.next;
     }
 };
