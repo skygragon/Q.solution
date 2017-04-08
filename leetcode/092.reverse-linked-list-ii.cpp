@@ -39,22 +39,16 @@ public:
     ListNode* reverseBetween(ListNode* head, int m, int n) {
         if (m == n) return head;
 
-        ListNode node(0);
+        ListNode node(0), *p = &node;
         node.next = head;
 
-        ListNode* p = &node;
         int i = 0;
-
-        while (++i <= m) {
-            head = p;
-            p = p->next;
-        }
+        while (++i <= m) { head = p; p = p->next; }
 
         ListNode* p1 = p->next;
         while (i++ <= n) {
             p->next = p1->next;
-            p1->next = head->next;
-            head->next = p1;
+            p1->next = head->next; head->next = p1;
             p1 = p->next;
         }
 
