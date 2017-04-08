@@ -29,8 +29,7 @@
 class Solution {
 public:
     ListNode* deleteDuplicates(ListNode* head) {
-        ListNode node(0);
-        ListNode* p = &node;
+        ListNode node(0), *p = &node;
 
         while (head) {
             if (p == &node || p->val != head->val) {
@@ -38,9 +37,9 @@ public:
                 p = p->next;
                 head = head->next;
             } else {
-                ListNode* p1 = head;
+                ListNode* dup = head;
                 head = head->next;
-                delete(p1);
+                delete dup;
             }
         }
         p->next = NULL;
