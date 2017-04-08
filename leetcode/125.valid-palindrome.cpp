@@ -37,20 +37,15 @@ public:
     }
 
     bool isPalindrome(string s) {
-        bool b = true;
-
         int i = 0, j = s.size()-1;
-        while (i < j && b) {
-            while (!lower(s[i])) ++i;
-            if (i >= j) break;
+        while (i < j) {
+            while (!lower(s[i])) ++i; if (i >= j) break;
+            while (!lower(s[j])) --j; if (i >= j) break;
 
-            while (!lower(s[j])) --j;
-            if (i >= j) break;
+            if (lower(s[i]) != lower(s[j])) return false;
 
-            if (lower(s[i]) != lower(s[j])) b = false;
             ++i; --j;
         }
-
-        return b;
+        return true;
     }
 };
