@@ -32,26 +32,15 @@
 class Solution {
 public:
     int canCompleteCircuit(vector<int>& gas, vector<int>& cost) {
-        int n = gas.size();
-        if (n == 0) return -1;
+        int n = gas.size(); if (n == 0) return -1;
 
-        vector<int> v(n);
-        for (int i = 0; i < n; ++i) v[i] = gas[i]-cost[i];
-
-        unordered_set<int> failed;
-        int i = 0, s = 0, len = 0;
-        while (true) {
-            s += v[i];
-            i = (i+1) % n;
-
-            if (s < 0) {
-                s = 0; len = 0;
-                if (failed.find(i) != failed.end()) break;
-                failed.insert(i);
-            } else {
-                if (++len == n) return i;
-            }
+        int cur = 0, total = 0, j = -1;
+        for (int i = 0; i < n; ++i) {
+            cur += gas[i]-cost[i];
+            total += gas[i]-cost[i];
+            if (cur < 0) { cur = 0; j = i; }
         }
-        return -1;
+
+        return total < 0 ? -1 : j+1;
     }
 };
