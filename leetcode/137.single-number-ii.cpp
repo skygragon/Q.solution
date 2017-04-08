@@ -24,14 +24,9 @@ public:
     int singleNumber(vector<int>& nums) {
         int x = 0;
         for (int i = 0; i < sizeof(int)*8; ++i) {
-            int mask = (1 << i);
-
-            int s = 0;
-            for (auto num : nums) {
-                s += ((num & mask) >> i);
-            }
-
-            x |= ((s % 3) << i);
+            int count = 0;
+            for (auto num : nums) count += ((num & (1 << i)) >> i);
+            x |= ((count % 3) << i);
         }
         return x;
     }
