@@ -30,11 +30,12 @@
 class Solution {
 public:
     int removeDuplicates(vector<int>& nums) {
-        int i = -1, last = -1;
-        for (int j = 0; j < nums.size(); ++j) {
-            if (j == 0 || last != nums[j]) {
-                nums[++i] = last = nums[j];
-            }
+        int n = nums.size();
+        if (n == 0) return 0;
+
+        int i = 0;
+        for (int j = 1; j < n; ++j) {
+            if (nums[j] != nums[i]) nums[++i] = nums[j];
         }
         return i+1;
     }
