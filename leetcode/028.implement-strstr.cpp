@@ -22,11 +22,12 @@ public:
         if (s.empty()) return 0;
         if (haystack.empty()) return -1;
 
-        int n = s.size(), m = haystack.size();
-        vector<int> next(n, -1);
+        int n = haystack.size(), m = s.size(), i, j, k;
 
-        int i = 0, j = 0, k = -1;
-        while (i < n-1) {
+        // generate next[]
+        vector<int> next(m, -1);
+        i = 0; k = -1;
+        while (i < m-1) {
             if (k == -1 || s[i] == s[k]) {
                 next[++i] = ++k;
             } else {
@@ -34,12 +35,13 @@ public:
             }
         }
 
-        i = 0;
-        while (i < m) {
+        // do match
+        i = j = 0;
+        while (i < n) {
             if (j == -1 || haystack[i] == s[j]) { ++i; ++j; }
             else j = next[j];
 
-            if (j == n) return i-j;
+            if (j == m) return i-j;
         }
 
         return -1;
