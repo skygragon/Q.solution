@@ -33,17 +33,15 @@ class Solution {
 public:
     ListNode *detectCycle(ListNode *head) {
         ListNode *p = head, *p1 = head;
-        while (p && p1) {
-            p = p->next; p1 = p1->next;
-            if (!p || !p1) return NULL;
-            p1 = p1->next;
+        while (p1) {
+            p1 = p1->next; if (!p1) return NULL;
+            p1 = p1->next; p = p->next;
+            if (p1 != p) continue;
 
             // found circle
-            if (p == p1) {
-                p1 = head;
-                while (p != p1) { p = p->next; p1 = p1->next; }
-                return p;
-            }
+            p = head;
+            while (p != p1) { p = p->next; p1 = p1->next; }
+            return p;
         }
         return NULL;
     }
