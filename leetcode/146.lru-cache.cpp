@@ -42,61 +42,41 @@
  */
 class LRUCache {
 public:
-    typedef struct ListNode {
+    struct Node {
         int k, v;
-        ListNode *prev, *next;
+        Node(int _k = 0, int _v = 0) : k(_k), v(_v) {}
+    };
 
-        ListNode(int _k = 0, int _v = 0) : k(_k), v(_v) {}
-    } ListNode;
-
-    ListNode head;
-    unordered_map<int, ListNode*> m;
-    int cap, cur;
+    list<Node> nodes;
+    unordered_map<int, list<Node>::iterator> m;
+    int capacity;
 
     LRUCache(int capacity) {
-        cap = capacity; cur = 0;
-        head.next = head.prev = &head;
+        this->capacity = capacity;
     }
     
     int get(int key) {
-        ListNode *p = m[key];
-        if (!p) return -1;
+        auto it = m.find(key);
+        if (it == m.end()) return -1;
 
-        remove(p); insert(p);
-        return p->v;
+        nodes.splice(nodes.begin(), nodes, m[key]);
+        m[key] = nodes.begin();
+        return m[key]->v;
     }
     
     void put(int key, int value) {
-        ListNode* p = m[key];
-        if (!p) {
-            p = new ListNode(key, value);
-            insert(p);
-            m[key] = p;
+        auto it = m.find(key);
+        if (it == m.end()) {
+            if (nodes.size() == capacity) {
+                auto last = nodes.back();
+                nodes.pop_back();
+                m.erase(last.k);
+            }
+            nodes.push_front(Node(key, value));
+            m[key] = nodes.begin();
         } else {
-            p->v = value;
-            remove(p); insert(p);
-        }
-    }
-
-    ListNode* remove(ListNode *p) {
-        p->prev->next = p->next;
-        p->next->prev = p->prev;
-        p->prev = p->next = NULL;
-        --cur;
-        return p;
-    }
-
-    void insert(ListNode *p) {
-        p->next = head.next;
-        p->prev = &head;
-        head.next->prev = p;
-        head.next = p;
-        ++cur;
-
-        while (cur > cap) {
-            ListNode *p = remove(head.prev);
-            m.erase(p->k);
-            delete p;
+            get(key);
+            m[key]->v = value;
         }
     }
 };
