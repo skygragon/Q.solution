@@ -30,9 +30,9 @@ public:
     RandomListNode *copyRandomList(RandomListNode *head) {
         if (!head) return NULL;
 
-        RandomListNode *p = head, *p1;
+        RandomListNode *p = head;
         while (p) {
-            p1 = new RandomListNode(p->label);
+            RandomListNode *p1 = new RandomListNode(p->label);
             p1->next = p->next; p->next = p1; p = p1->next;
         }
 
@@ -42,15 +42,14 @@ public:
             p = p->next->next;
         }
 
-        RandomListNode node(0);
-        p = head; head = &node;
+        // recover original list
+        RandomListNode node(0), *cur = &node;
+        p = head;
         while (p) {
-            head->next = p->next;
-            head = head->next;
-            p->next = p->next->next;
-            p = p->next;
+            cur->next = p->next; cur = cur->next;
+            p->next = p->next->next; p = p->next;
         }
-        head->next = NULL;
+        cur->next = NULL;
         return node.next;
     }
 };
