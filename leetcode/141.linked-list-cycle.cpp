@@ -28,14 +28,11 @@
 class Solution {
 public:
     bool hasCycle(ListNode *head) {
-        ListNode* p = head;
-        ListNode* p1 = head;
-        while (p && p1) {
+        ListNode *p = head, *p1 = head;
+        while (p1) {
             p = p->next;
-            p1 = p1->next;
-            if (!p1) return false;
-            p1 = p1->next;
-            if (p == p1) return true;
+            p1 = p1->next; if (!p1) return false;
+            p1 = p1->next; if (p == p1) return true;
         }
         return false;
     }
