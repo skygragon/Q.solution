@@ -31,19 +31,15 @@ class Solution {
 public:
     string countAndSay(int n) {
         string s = "1";
-
         while (--n) {
             ostringstream oss;
-            int last = 0, n =s.size();
-            for (int i = 1; i <= n; ++i) {
-                if (i == n || s[last] != s[i]) {
-                    oss << (i-last) << s[last];
-                    last = i;
-                }
+            for (int i = 1, m = s.size(), last = 0; i <= m; ++i) {
+                if (i < m && s[i] == s[last]) continue;
+                oss << (i-last) << s[last];
+                last = i;
             }
             s = oss.str();
         }
-
         return s;
     }
 };
