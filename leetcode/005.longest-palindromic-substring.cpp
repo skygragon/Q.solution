@@ -34,24 +34,24 @@ public:
     string longestPalindrome(string s) {
         string s2 = "#";
         for (auto c : s) { s2 += c; s2 += "#"; }
-        s.swap(s2);
 
-        int n = s.size();
-        int last_i = -1, last_e = -1, max_i = -1;
+        int b = -1, e = -1, winner = -1, n = s2.size();
+        vector<int> len(n, 0);
 
-        vector<int> v(n, 0);
         for (int i = 0; i < n; ++i) {
             int x = 0;
-            if (i > last_i && i <= last_e) x = min(v[2*last_i-i], last_e-i);
+            if (i > b && i <= e) x = min(len[2*b-i], e-i);
 
-            int j = i-x-1, k = i+x+1;
-            while (j >= 0 && k < n && s[j] == s[k]) { --j; ++k; ++x; }
+            for (int j = i-x-1, k = i+x+1;
+                 j >= 0 && k < n && s2[j] == s2[k];
+                 --j, ++k, ++x);
 
-            v[i] = x;
-            if (i+x > last_e) { last_i = i; last_e = i+x; }
-            if (max_i == -1 || x > v[max_i]) max_i = i;
+            len[i] = x;
+
+            if (i+x > e) { b = i; e = i+x; }
+            if (winner == -1 || x > len[winner]) winner = i;
         }
 
-        return s2.substr(max_i/2-v[max_i]/2, v[max_i]);
+        return s.substr(winner/2 - len[winner]/2, len[winner]);
     }
 };
