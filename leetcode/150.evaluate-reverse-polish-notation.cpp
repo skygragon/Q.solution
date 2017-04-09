@@ -29,28 +29,22 @@
 class Solution {
 public:
     int evalRPN(vector<string>& tokens) {
-        if (tokens.empty()) return 0;
-
+        const string OPS = "+-*/";
         stack<int> nums;
-        stack<string> ops;
-        const string OP = "+-*/";
-
-        for (int i = 0; i < tokens.size(); ++i) {
-            auto pos = OP.find(tokens[i]);
-            if (pos == string::npos) {
-                nums.push(stoi(tokens[i]));
+        for (auto &s : tokens) {
+            if (OPS.find(s) == string::npos) {
+                nums.push(stoi(s));
             } else {
                 int y = nums.top(); nums.pop();
                 int x = nums.top(); nums.pop();
-                switch(pos) {
-                    case 0: nums.push(x + y); break;
-                    case 1: nums.push(x - y); break;
-                    case 2: nums.push(x * y); break;
-                    case 3: nums.push(x / y); break;
+                switch(s[0]) {
+                    case '+': nums.push(x + y); break;
+                    case '-': nums.push(x - y); break;
+                    case '*': nums.push(x * y); break;
+                    case '/': nums.push(x / y); break;
                 }
             }
         }
-
-        return nums.top();
+        return nums.empty() ? 0 : nums.top();
     }
 };
