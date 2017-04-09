@@ -34,7 +34,7 @@ public:
     vector<string> split(const string &s) {
         vector<string> v;
         for(int i = 0, last = -1, n = s.size(); i <= n; ++i) {
-            if (s[i] == '/' || i == n) {
+            if (i == n || s[i] == '/') {
                 int len = i-last-1;
                 if (len > 0) v.push_back(s.substr(last+1, len));
                 last = i;
@@ -44,22 +44,15 @@ public:
     }
 
     string simplifyPath(string path) {
-        vector<string> v = split(path);
         stack<string> st;
-        for (auto &s : v) {
-            if (s == "..") {
-                if (!st.empty()) st.pop();
-            } else if (s == ".") continue;
+        for (auto &s : split(path)) {
+            if (s == ".") continue;
+            else if (s == "..") { if (!st.empty()) st.pop(); }
             else st.push(s);
         }
 
-        string path2;
-        while (!st.empty()) {
-            path2 = "/" + st.top() + path2;
-            st.pop();
-        }
-        if (path2.empty()) path2 = "/";
-
-        return path2;
+        string s;
+        while (!st.empty()) { s = "/" + st.top() + s; st.pop(); }
+        return s.empty() ? "/" : s;
     }
 };
