@@ -40,22 +40,21 @@ class Solution {
 public:
     vector<int> postorderTraversal(TreeNode* root) {
         vector<int> v;
-        if (!root) return v;
-
         stack<TreeNode*> s;
-        s.push(root);
+        while (root) { s.push(root); root = root->left; }
 
+        TreeNode *last = NULL;
         while (!s.empty()) {
             TreeNode* p = s.top();
-            s.pop();
-
-            if (!p->left && !p->right) v.push_back(p->val);
-            else { s.push(p); }
-
-            if (p->right) { s.push(p->right); p->right = NULL; }
-            if (p->left) { s.push(p->left); p->left = NULL; }
+            if (!p->right || p->right == last) {
+                v.push_back(p->val);
+                s.pop();
+                last = p;
+            } else {
+                p = p->right;
+                while (p) { s.push(p); p = p->left; }
+            }
         }
-
         return v;
     }
 };
