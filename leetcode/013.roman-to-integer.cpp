@@ -19,16 +19,12 @@ public:
     };
 
     int romanToInt(string s) {
-        int x = 0;
-
-        int last = 0;
+        int num = 0, last = 0;
         for (auto c : s) {
             int cur = m[c];
-            if (last < cur) x += cur-last-last;
-            else x += cur;
+            num += (last < cur) ? cur-last*2 : cur;
             last = cur;
         }
-
-        return x;
+        return num;
     }
 };
