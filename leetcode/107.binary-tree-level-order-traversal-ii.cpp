@@ -46,25 +46,23 @@ class Solution {
 public:
     vector<vector<int>> levelOrderBottom(TreeNode* root) {
         vector<vector<int>> vv;
-        vector<int> v;
 
-        queue<TreeNode*> q;
-        int cur = 0, next = 0;
-        if (root) { q.push(root); ++cur; }
+        queue<TreeNode*> cur, next;
+        if (root) cur.push(root);
 
-        while (!q.empty()) {
-            TreeNode* p = q.front();
-            q.pop();
+        while (!cur.empty()) {
+            vector<int> v;
 
-            v.push_back(p->val);
-            if (p->left) { q.push(p->left); ++next; }
-            if (p->right) { q.push(p->right); ++next; }
+            while (!cur.empty()) {
+                TreeNode* p = cur.front(); cur.pop();
+                v.push_back(p->val);
 
-            if (--cur == 0) {
-                vv.push_back(v);
-                v.clear();
-                swap(cur, next);
+                if (p->left) next.push(p->left);
+                if (p->right) next.push(p->right);
             }
+
+            vv.push_back(v);
+            swap(cur, next);
         }
 
         reverse(vv.begin(), vv.end());
