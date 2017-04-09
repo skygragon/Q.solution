@@ -53,27 +53,30 @@
 class Solution {
 public:
     int myAtoi(string str) {
-        int i = 0, n = str.size();
+        bool sign = true, overflow = false;;
+        int MIN = numeric_limits<int>::min();
+        int MAX = numeric_limits<int>::max();
+        int num = 0, i = 0, n = str.size();
+
         while (i < n && str[i] == ' ') ++i;
         if (i == n) return 0;
 
-        bool sign = true;
         if (str[i] == '+') { sign = true; ++i; }
         else if (str[i] == '-') { sign = false; ++i; }
-        else if (str[i] > '9' && str[i] < '0') return 0;
 
-        int x = 0;
-        while (i < n && str[i] >= '0' && str[i] <= '9') {
+        for (; i < n; ++i) {
             int c = str[i] - '0';
-            if (x > 214748364)
-                return sign ? 2147483647 : -2147483648;
-            if (x == 214748364) {
-                if (sign && c >= 7) return 2147483647;
-                if (!sign && c >= 8) return -2147483648;
-            }
-            x = x * 10 + c; ++i;
+            if (c < 0 || c > 9) break;
+            if (overflow) break;
+
+            if (num > MAX / 10) overflow = true;
+            else if (num == MAX / 10 && ((sign && c >= 7) || (!sign && c >= 8))) overflow = true;
+            else num = num*10 + c;
         }
 
-        return sign ? x : -x;
+        if (overflow) num = sign ? MAX : MIN;
+        else num = sign ? num : -num;
+
+        return num;
     }
 };
