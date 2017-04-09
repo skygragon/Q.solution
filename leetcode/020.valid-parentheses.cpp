@@ -18,29 +18,15 @@
 class Solution {
 public:
     bool isValid(string s) {
+        unordered_map<char, char> m = {{')','('}, {']','['}, {'}','{'}};
+
         stack<char> sc;
         for (auto c : s) {
             switch(c) {
-                case '(':
-                case '[':
-                case '{':
-                    sc.push(c);
-                    break;
-                case ')':
-                    if (sc.empty() || sc.top() != '(') return false;
-                    sc.pop();
-                    break;
-                case ']':
-                    if (sc.empty() || sc.top() != '[') return false;
-                    sc.pop();
-                    break;
-                case '}':
-                    if (sc.empty() || sc.top() != '{') return false;
-                    sc.pop();
-                    break;
+                case '(': case '[': case '{': sc.push(c); break;
+                case ')': case ']': case '}': if (sc.empty() || sc.top() != m[c]) return false; sc.pop(); break;
             }
         }
-
         return sc.empty();
     }
 };
