@@ -25,12 +25,12 @@
 class Solution {
 public:
     int lengthOfLastWord(string s) {
-        int x = s.size() - 1;
-        while (x >= 0 && s[x] == ' ') --x;
-        if (x < 0) return 0;
+        int i = s.size() - 1;
+        while (i >= 0 && s[i] == ' ') --i;
+        if (i < 0) return 0;
 
-        int y = x;
-        while (y >= 0 && s[y] != ' ') --y;
-        return x - y;
+        int j = i;
+        while (i >= 0 && s[i] != ' ') --i;
+        return j-i;
     }
 };
