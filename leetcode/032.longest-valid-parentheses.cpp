@@ -23,22 +23,20 @@
 class Solution {
 public:
     int longestValidParentheses(string s) {
-        int n = s.size(), x = 0;
-        vector<int> v(n, 0);
+        int n = s.size(), winner = 0;
+        vector<int> len(n, 0);
+
         for (int i = 1; i < n; ++i) {
             if (s[i] == '(') continue;
 
-            if (s[i-1] == '(') {
-                v[i] = 2 + (i>=2 ? v[i-2] : 0);
-            } else if (v[i-1] > 0) {
-                int j = i-v[i-1]-1;
-                if (s[j] == '(')
-                    v[i] = 2 + v[i-1] + (j>=1 ? v[j-1] : 0);
-            }
+            int j = i-len[i-1]-1;
+            if (s[j] != '(') continue;
 
-            x = max(x, v[i]);
+            len[i] = 2 + len[i-1];
+            if (j >= 1) len[i] += len[j-1];
+
+            winner = max(winner, len[i]);
         }
-
-        return x;
+        return winner;
     }
 };
