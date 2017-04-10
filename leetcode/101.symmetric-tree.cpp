@@ -50,10 +50,10 @@ class Solution {
 public:
     bool isSymmetric(TreeNode* l, TreeNode* r) {
         if (!l && !r) return true;
-        if (l && r) return (l->val == r->val) &&
-                           isSymmetric(l->left, r->right) &&
-                           isSymmetric(l->right, r->left);
-        return false;
+        if (!l || !r) return false;
+        return (l->val == r->val) &&
+               isSymmetric(l->left, r->right) &&
+               isSymmetric(l->right, r->left);
     }
 
     bool isSymmetric(TreeNode* root) {
