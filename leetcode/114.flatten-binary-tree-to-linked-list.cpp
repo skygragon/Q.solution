@@ -58,26 +58,20 @@
 class Solution {
 public:
     void flatten(TreeNode* root) {
-        if (!root) return;
-
         stack<TreeNode*> s;
-        s.push(root);
+        if (root) s.push(root);
 
         TreeNode* last = NULL;
         while (!s.empty()) {
-            TreeNode* p = s.top();
-            s.pop();
-
-            if (last) {
-                last->left = NULL;
-                last->right = p;
-            }
-            last = p;
+            TreeNode* p = s.top(); s.pop();
 
             if (p->right) s.push(p->right);
             if (p->left) s.push(p->left);
-        }
 
-        last->left = last->right = NULL;
+            p->left = NULL;
+            if (last) last->right = p;
+            last = p;
+        }
+        if (last) last->right = NULL;
     }
 };
