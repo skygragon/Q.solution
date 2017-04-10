@@ -28,21 +28,17 @@
  */
 class Solution {
 public:
-    int find(TreeNode* p) {
+    int height(TreeNode* p) {
         if (!p) return 0;
 
-        int x = find(p->left);
-        if (x < 0) return x;
+        int l = height(p->left); if (l < 0) return -1;
+        int r = height(p->right); if (r < 0) return -1;
 
-        int y = find(p->right);
-        if (y < 0) return y;
-
-        if (x < y) swap(x, y);
-
-        return x-y > 1 ? y-x : x+1;
+        if (l < r) swap(l, r);
+        return l-r > 1 ? -1 : l+1;
     }
 
     bool isBalanced(TreeNode* root) {
-        return find(root) >= 0;
+        return height(root) >= 0;
     }
 };
