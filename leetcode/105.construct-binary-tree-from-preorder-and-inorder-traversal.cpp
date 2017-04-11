@@ -30,22 +30,19 @@ public:
     TreeNode* next(int i1, int j1, int i2, int j2) {
         if (i1 > j1 || i2 > j2) return NULL;
 
-        int x = pre[i2];
-        int k;
-        for (k = i1; k <= j1 && in[k] != x; ++k);
+        int x = pre[i1], k;
+        for (k = i2; k <= j2 && in[k] != x; ++k);
 
         TreeNode* p = new TreeNode(x);
-        p->left = next(i1, k-1, i2+1, i2+k-i1);
-        p->right = next(k+1, j1, j2+k-j1+1, j2);
-
+        p->left = next(i1+1, i1+k-i2, i2, k-1);
+        p->right = next(j1+k+1-j2, j1, k+1, j2);
         return p;
     }
 
     TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
-        pre = preorder;
-        in = inorder;
+        pre = preorder; in = inorder;
         if (pre.empty() || in.empty()) return NULL;
 
-        return next(0, in.size()-1, 0, pre.size()-1);
+        return next(0, pre.size()-1, 0, in.size()-1);
     }
 };
