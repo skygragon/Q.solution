@@ -65,17 +65,19 @@
  */
 class Solution {
 public:
-    void next(TreeLinkNode *p, bool isLeft, TreeLinkNode* p1) {
+    void next(TreeLinkNode *p) {
         if (!p) return;
 
-        if (isLeft && p1) p->next = p1->right;
-        if (!isLeft && p1 && p1->next) p->next = p1->next->left;
+        TreeLinkNode node(0), *cur = &node;
+        for (; p; p = p->next) {
+            if (p->left) { cur->next = p->left; cur = cur->next; }
+            if (p->right) { cur->next = p->right; cur = cur->next; }
+        }
 
-        next(p->left, true, p);
-        next(p->right, false, p);
+        next(node.next);
     }
 
     void connect(TreeLinkNode *root) {
-        next(root, true, NULL);
+        next(root);
     }
 };
