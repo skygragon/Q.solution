@@ -47,27 +47,19 @@
  */
 class Solution {
 public:
-    void connect(TreeLinkNode *root) {
-        if (!root) return;
+    void next(TreeLinkNode *p) {
+        if (!p) return;
 
-        queue<TreeLinkNode*> q;
-        q.push(root);
-        int cur = 1, next = 0;
-        TreeLinkNode* last = NULL;
-
-        while (!q.empty()) {
-            TreeLinkNode* p = q.front();
-            q.pop();
-
-            if (p->left) { q.push(p->left); ++next; }
-            if (p->right) { q.push(p->right); ++next; }
-            if (last) last->next = p;
-            last = p;
-
-            if (--cur == 0) {
-                last = NULL;
-                swap(cur, next);
-            }
+        TreeLinkNode node(0), *cur = &node;
+        for (; p; p = p->next) {
+            if (p->left) { cur->next = p->left; cur = cur->next; }
+            if (p->right) { cur->next = p->right; cur = cur->next; }
         }
+
+        next(node.next);
+    }
+
+    void connect(TreeLinkNode *root) {
+        next(root);
     }
 };
