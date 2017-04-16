@@ -30,22 +30,22 @@
  */
 class Solution {
 public:
+    TreeNode* next(ListNode *&p, int i, int j) {
+        if (i > j) return NULL;
+
+        int m = i+(j-i)/2;
+        TreeNode *l = next(p, i, m-1);
+        TreeNode *cur = new TreeNode(p->val); p = p->next;
+        cur->left = l;
+        cur->right = next(p, m+1, j);
+
+        return cur;
+    }
+
     TreeNode* sortedListToBST(ListNode* head) {
-        if (!head) return NULL;
+        int n = 0; ListNode *p = head;
+        while (p) { p = p->next; ++n; }
 
-        ListNode *p = head, *p1 = head, *last = NULL;
-        while (p && p1) {
-            p1 = p1->next; if (!p1) break; p1 = p1->next;
-            last = p; p = p->next;
-        }
-
-        TreeNode* t = new TreeNode(p->val);
-        if (last) {
-            last->next = NULL;
-            t->left = sortedListToBST(head);
-        }
-        t->right = sortedListToBST(p->next);
-
-        return t;
+        return next(head, 1, n);
     }
 };
