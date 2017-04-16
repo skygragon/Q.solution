@@ -41,26 +41,18 @@
  */
 class Solution {
 public:
-    int x;
+    int len {numeric_limits<int>::min()};
 
     int next(TreeNode *p) {
         if (!p) return 0;
-        int l = next(p->left);
-        int r = next(p->right);
 
-        int y = max(l, r);
-        if (y > 0) x = max(x, y);
-        x = max(x, l+r+p->val);
-
-        y = max(p->val, p->val + y);
-        x = max(x, y);
-
-        return y;
+        int l = next(p->left), r = next(p->right); len = max(len, l+r+p->val);
+        int x = max(p->val, p->val+max(l, r)); len = max(len, x);
+        return x;
     }
 
     int maxPathSum(TreeNode* root) {
-        x = numeric_limits<int>::min();
         next(root);
-        return x;
+        return len;
     }
 };
