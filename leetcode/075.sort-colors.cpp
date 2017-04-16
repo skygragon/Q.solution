@@ -44,9 +44,9 @@ public:
 
         while (k <= j) {
             switch(nums[k]) {
-                case 0: ++i; swap(nums[i], nums[k]); ++k; break;
+                case 0: swap(nums[++i], nums[k++]); break;
                 case 1: ++k; break;
-                case 2: swap(nums[j], nums[k]); --j; break;
+                case 2: swap(nums[j--], nums[k]); break;
             }
         }
     }
