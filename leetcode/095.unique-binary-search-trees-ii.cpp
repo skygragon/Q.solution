@@ -35,59 +35,22 @@
  */
 class Solution {
 public:
-    vector<vector<TreeNode*>> vv;
+    vector<TreeNode*> next(int i, int j) {
+        vector<TreeNode*> v;
+        if (i > j) { v.push_back(NULL); return v; }
 
-    TreeNode* copy(TreeNode *p, int dx) {
-        if (!p) return NULL;
-        TreeNode *p1 = new TreeNode(p->val + dx);
-        p1->left = copy(p->left, dx);
-        p1->right = copy(p->right, dx);
-        return p1;
-    }
-
-    void next(int n) {
-        if (n == 1) {
-            vv[1].push_back(new TreeNode(1));
-            return;
-        }
-
-        next(n-1);
-
-        TreeNode *p = NULL, *p1 = NULL, *p2 = NULL;
-        for (auto root : vv[n-1]) {
-            p = new TreeNode(n);
-            p->left = copy(root, 0);
-            vv[n].push_back(p);
-
-            p = new TreeNode(n);
-            p1 = copy(root, 0);
-            vv[n].push_back(p1);
-
-            while (p1->right) p1 = p1->right;
-            p1->right = p;
-        }
-
-        for (int i = 1; i < n-1; ++i) {
-            int j = n-1-i;
-            for (auto root_l : vv[i]) {
-                for (auto root_r : vv[j]) {
-                    p1 = copy(root_l, 0);
-                    vv[n].push_back(p1);
-
-                    p = new TreeNode(n);
-                    p->left = copy(root_r, i);
-
-                    while (p1->right) p1 = p1->right;
-                    p1->right = p;
+        for (int k = i; k <= j; ++k)
+            for (auto l : next(i, k-1))
+                for (auto r : next(k+1, j)) {
+                    TreeNode *p = new TreeNode(k);
+                    p->left = l; p->right = r;
+                    v.push_back(p);
                 }
-            }
-        }
+        return v;
     }
 
     vector<TreeNode*> generateTrees(int n) {
-        vv.resize(n+1);
-        if (n) next(n);
-
-        return vv[n];
+        if (n == 0) return {};
+        return next(1, n);
     }
 };
