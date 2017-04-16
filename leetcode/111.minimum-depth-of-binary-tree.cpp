@@ -24,20 +24,13 @@
  */
 class Solution {
 public:
-    int x = numeric_limits<int>::max();
+    int minDepth(TreeNode* p) {
+        if (!p) return 0;
+        if (!p->left && !p->right) return 1;
 
-    void next(TreeNode* p, int d) {
-        if (!p->left && !p->right) {
-            x = min(x, d);
-            return;
-        }
-        if (p->left) next(p->left, d+1);
-        if (p->right) next(p->right, d+1);
-    }
-
-    int minDepth(TreeNode* root) {
-        if (!root) return 0;
-        next(root, 1);
-        return x;
+        int d = numeric_limits<int>::max();
+        if (p->left) d = min(d, 1+minDepth(p->left));
+        if (p->right) d = min(d, 1+minDepth(p->right));
+        return d;
     }
 };
