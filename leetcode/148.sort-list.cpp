@@ -20,36 +20,36 @@
  */
 class Solution {
 public:
+    // HT = head and tail
     using HT = pair<ListNode*, ListNode*>;
 
     HT next(ListNode* p) {
         if (!p || !p->next) return {p, p};
 
-        ListNode left(0), right(0), cur(0);
-        ListNode *p1 = p, *pl = &left, *pr = &right, *pc = &cur;
+        ListNode left(0), right(0), middle(0);
+        ListNode *pl = &left, *pr = &right, *pm = &middle;
 
-        while (p1) {
-            if (p1->val < p->val) { pl->next = p1; pl = pl->next; }
-            if (p1->val > p->val) { pr->next = p1; pr = pr->next; }
-            if (p1->val == p->val) { pc->next = p1; pc = pc->next; }
-            p1 = p1->next;
+        ListNode *cur = p;
+        for (; cur; cur = cur->next) {
+            if (cur->val < p->val)  { pl->next = cur; pl = pl->next; }
+            if (cur->val > p->val)  { pr->next = cur; pr = pr->next; }
+            if (cur->val == p->val) { pm->next = cur; pm = pm->next; }
         }
-        pl->next = pr->next = pc->next = NULL;
+        pl->next = pr->next = pm->next = NULL;
 
         auto l = next(left.next);
         auto r = next(right.next);
 
-        pl = l.first ? l.first : cur.next;
-        pr = r.second ? r.second : pc;
+        if (l.second) l.second->next = middle.next;
+        if (r.first) pm->next = r.first;
 
-        if (l.second) l.second->next = cur.next;
-        pc->next = r.first;
-
+        pl = l.first ? l.first : middle.next;
+        pr = r.second ? r.second : pm;
         return {pl, pr};
     }
 
     ListNode* sortList(ListNode* head) {
-        auto x = next(head);
-        return x.first;
+        auto l = next(head);
+        return l.first;
     }
 };
