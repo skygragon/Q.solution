@@ -39,14 +39,10 @@
  */
 class Solution {
 public:
-    bool find(TreeNode* p, int x, int sum) {
+    bool hasPathSum(TreeNode *p, int sum) {
         if (!p) return false;
-        x += p->val;
-        if (!p->left && !p->right) return x == sum;
-        return find(p->left, x, sum) || find(p->right, x, sum);
-    }
-
-    bool hasPathSum(TreeNode* root, int sum) {
-        return find(root, 0, sum);
+        sum -= p->val;
+        if (!p->left && !p->right) return sum == 0;
+        return hasPathSum(p->left, sum) || hasPathSum(p->right, sum);
     }
 };
