@@ -22,16 +22,16 @@
  */
 class Solution {
 public:
-    TreeNode* make(vector<int> &v, int i, int j) {
+    TreeNode* next(vector<int> &nums, int i, int j) {
         if (i > j) return NULL;
-        int m = (i+j)/2;
-        TreeNode* p = new TreeNode(v[m]);
-        p->left = make(v, i, m-1);
-        p->right = make(v, m+1, j);
+        int m = i+(j-i)/2;
+        TreeNode *p = new TreeNode(nums[m]);
+        p->left = next(nums, i, m-1);
+        p->right = next(nums, m+1, j);
         return p;
     }
 
     TreeNode* sortedArrayToBST(vector<int>& nums) {
-        return make(nums, 0, nums.size() - 1);
+        return next(nums, 0, nums.size()-1);
     }
 };
