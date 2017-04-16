@@ -23,20 +23,15 @@ public:
     ListNode* insertionSortList(ListNode* head) {
         if (!head) return NULL;
 
-        ListNode node(0);
+        ListNode node(0), *cur = head;
+        while (cur) {
+            ListNode *p = &node;
+            while (p->next && p->next->val < cur->val) p = p->next;
 
-        ListNode* p = head;
-        while (p) {
-            ListNode* p1 = &node;
-            while (p1->next && p1->next->val < p->val)
-                p1 = p1->next;
-
-            head = p->next;
-            p->next = p1->next;
-            p1->next = p;
-            p = head;
+            ListNode *tmp = cur->next;
+            cur->next = p->next; p->next = cur;
+            cur = tmp;
         }
-
         return node.next;
     }
 };
