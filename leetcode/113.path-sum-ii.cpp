@@ -47,27 +47,23 @@
 class Solution {
 public:
     vector<vector<int>> vv;
-    vector<int> v;
-    int sum;
+    vector<int> cur;
 
-    void next(TreeNode* p, int x) {
+    void next(TreeNode *p, int sum) {
         if (!p) return;
 
-        v.push_back(p->val);
-        x += p->val;
-
-        if (!p->left && !p->right && x == sum) {
-            vv.push_back(v);
+        cur.push_back(p->val); sum -= p->val;
+        if (!p->left && !p->right && sum == 0) {
+            vv.push_back(cur);
         } else {
-            next(p->left, x);
-            next(p->right, x);
+            next(p->left, sum);
+            next(p->right, sum);
         }
-        v.pop_back();
+        cur.pop_back();
     }
 
     vector<vector<int>> pathSum(TreeNode* root, int sum) {
-        this->sum = sum;
-        next(root, 0);
+        next(root, sum);
         return vv;
     }
 };
