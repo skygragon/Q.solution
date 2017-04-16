@@ -41,18 +41,14 @@
  */
 class Solution {
 public:
-    void next(TreeNode* p, int cur, int& sum) {
-        if (!p) return;
-        cur = cur * 10 + p->val;
-        if (!p->left && !p->right) sum += cur;
-
-        next(p->left, cur, sum);
-        next(p->right, cur, sum);
+    int next(TreeNode *p, int cur) {
+        if (!p) return 0;
+        cur = cur*10 + p->val;
+        if (!p->left && !p->right) return cur;
+        return next(p->left, cur) + next(p->right, cur);
     }
 
     int sumNumbers(TreeNode* root) {
-        int sum = 0;
-        next(root, 0, sum);
-        return sum;
+        return next(root, 0);
     }
 };
