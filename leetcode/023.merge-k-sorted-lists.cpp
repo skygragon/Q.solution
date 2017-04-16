@@ -24,33 +24,24 @@
 class Solution {
 public:
     ListNode* mergeKLists(vector<ListNode*>& lists) {
-        int n = lists.size();
-        if (n == 0) return NULL;
+        int n = lists.size(); if (n == 0) return NULL;
 
-        auto comp = [](ListNode* p1, ListNode* p2) { return p1->val > p2->val; };
+        auto comp = [](ListNode *p1, ListNode *p2) { return p1->val > p2->val; };
         priority_queue<ListNode*, vector<ListNode*>, decltype(comp)> q(comp);
-        unordered_map<ListNode*, int> m;
+        unordered_map<ListNode*, ListNode*> m;
 
-        ListNode node(0);
-        ListNode *p = &node, *head = NULL;
-
+        ListNode node(0), *head = &node, *p = NULL;
         for (int i = 0; i < n; ++i) {
-            head = lists[i];
-            if (!head) continue;
-            q.push(head); m[head] = i;
+            p = lists[i]; if (!p) continue;
+            q.push(p); m[p] = p->next; p->next = NULL;
         }
 
         while (!q.empty()) {
-            ListNode* p1 = q.top(); q.pop();
+            ListNode *cur = q.top(); q.pop();
+            ListNode *next = m[cur]; m.erase(cur);
 
-            int i = m[p1]; m.erase(p1);
-            head = lists[i] = lists[i]->next;
-            if (head) {
-                q.push(head);
-                m[head] = i;
-            }
-
-            p->next = p1; p = p->next; p->next = NULL;
+            if (next) { q.push(next); m[next] = next->next; next->next = NULL; }
+            head->next = cur; head = head->next;
         }
 
         return node.next;
