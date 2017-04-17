@@ -34,27 +34,22 @@
 class Solution {
 public:
     vector<vector<int>> vv;
-    vector<int> v, cur;
+    vector<int> nums, cur;
     int n;
 
     void next(int i) {
-        if (i == n) {
-            vv.push_back(cur);
-            return;
-        }
+        if (i == n) { vv.push_back(cur); return; }
 
-        cur.push_back(v[i]);
-        next(i+1);
-        cur.pop_back();
-        next(i+1);
+        cur.push_back(nums[i]); next(i+1);
+        cur.pop_back(); next(i+1);
     }
 
     vector<vector<int>> subsets(vector<int>& nums) {
-        v = nums;
-        n = v.size();
+        n = nums.size();
+        sort(nums.begin(), nums.end());
+        this->nums = nums;
 
         next(0);
-
         return vv;
     }
 };
