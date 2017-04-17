@@ -37,18 +37,15 @@
 class Solution {
 public:
     bool searchMatrix(vector<vector<int>>& matrix, int target) {
-        int m = matrix.size();
-        if (m == 0) return false;
-        int n = matrix[0].size();
-        if (n == 0) return false;
+        int m = matrix.size(); if (m == 0) return false;
+        int n = matrix[0].size(); if (n == 0) return false;
 
         int i = 0, j = m*n-1;
         while (i <= j) {
-            int k = i+(j-i)/2;
-            int cur = matrix[k / n][k % n];
+            int k = i+(j-i)/2, cur = matrix[k/n][k%n];
             if (cur == target) return true;
-            else if (cur > target) --j;
-            else ++i;
+            else if (cur > target) j = k-1;
+            else i = k+1;
         }
         return false;
     }
