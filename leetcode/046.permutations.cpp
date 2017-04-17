@@ -30,22 +30,21 @@
 class Solution {
 public:
     vector<vector<int>> vv;
+    vector<int> nums;
+    int n;
 
-    void next(vector<int>& v, int k) {
-        int n = v.size();
-        if (k == n-1) {
-            vv.push_back(v);
-            return;
-        }
-        for (int i = k; i < n; ++i) {
-            swap(v[k], v[i]);
-            next(v, k+1);
-            swap(v[k], v[i]);
+    void next(int i) {
+        if (i == n-1) { vv.push_back(nums); return; }
+        for (int j = i; j < n; ++j) {
+            swap(nums[i], nums[j]); next(i+1);
+            swap(nums[i], nums[j]);
         }
     }
 
     vector<vector<int>> permute(vector<int>& nums) {
-        next(nums, 0);
+        this->nums = nums;
+        n = nums.size();
+        next(0);
         return vv;
     }
 };
