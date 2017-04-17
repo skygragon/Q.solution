@@ -28,29 +28,28 @@
 class Solution {
 public:
     vector<vector<int>> vv;
+    vector<int> nums;
+    int n;
 
-    void next(vector<int>& v, int k) {
-        int n = v.size();
-        if (k == n-1) {
-            vv.push_back(v);
-            return;
-        }
+    void next(int i) {
+        if (i == n-1) { vv.push_back(nums); return; }
 
-        set<int> s;
-        for (int i = k; i < n; ++i) {
-            if (i > k && v[i] == v[k]) continue;
-            if (s.find(v[i]) != s.end()) continue;
+        set<int> used;
+        for (int j = i; j < n; ++j) {
+            if (j > i && nums[i] == nums[j]) continue;
+            if (used.find(nums[j]) != used.end()) continue;
 
-            swap(v[k], v[i]);
-            next(v, k+1);
-            swap(v[k], v[i]);
-            s.insert(v[i]);
+            swap(nums[i], nums[j]); next(i+1);
+            swap(nums[i], nums[j]);
+            used.insert(nums[j]);
         }
     }
 
     vector<vector<int>> permuteUnique(vector<int>& nums) {
         sort(nums.begin(), nums.end());
-        next(nums, 0);
+        this->nums = nums;
+        n = nums.size();
+        next(0);
         return vv;
     }
 };
