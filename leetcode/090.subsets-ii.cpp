@@ -34,28 +34,22 @@ class Solution {
 public:
     vector<vector<int>> vv;
     vector<int> nums, cur;
+    int n;
 
     void next(int i) {
-        int n = nums.size();
-        if (i == n) {
-            vv.push_back(cur);
-            return;
-        }
+        if (i == n) { vv.push_back(cur); return; }
 
-        cur.push_back(nums[i]);
-        next(i+1);
-        cur.pop_back();
-
+        cur.push_back(nums[i]); next(i+1);
         while (i < n-1 && nums[i] == nums[i+1]) ++i;
-        next(i+1);
+        cur.pop_back(); next(i+1);
     }
 
     vector<vector<int>> subsetsWithDup(vector<int>& nums) {
+        n = nums.size();
         sort(nums.begin(), nums.end());
         this->nums = nums;
 
         next(0);
-
         return vv;
     }
 };
