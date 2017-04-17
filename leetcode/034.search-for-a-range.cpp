@@ -23,28 +23,26 @@
  */
 class Solution {
 public:
-    int find(vector<int> &v, int x, bool isLeft) {
+    int search(vector<int> &v, int x, bool isLeft) {
         int i = 0, j = v.size()-1, k = -1;
         while (i <= j) {
             int m = i+(j-i)/2;
             if (v[m] == x) {
                 k = m;
-                if (isLeft) j = m-1;
-                else i = m+1;
+                if (isLeft) j = m-1; else i = m+1;
             } else if (v[m] > x) {
                 j = m-1;
             } else {
                 i = m+1;
             }
         }
-
         return k;
     }
 
     vector<int> searchRange(vector<int>& nums, int target) {
         return {
-            find(nums, target, true),
-            find(nums, target, false)
+            search(nums, target, true),
+            search(nums, target, false)
         };
     }
 };
