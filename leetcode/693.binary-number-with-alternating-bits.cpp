@@ -53,13 +53,13 @@ public:
     bool isAlternative(long long x) {
         x = x*3+1;
         while (x > 1) {
-            if (x % 4) return false;
-            x /= 4;
+            if (x & 3) return false;
+            x >>= 2;
         }
         return true;
     }
 
     bool hasAlternatingBits(int n) {
-        return n % 2 ? isAlternative(n) : isAlternative(n/2);    
+        return n % 2 ? isAlternative(n) : isAlternative(n/2);
     }
 };
